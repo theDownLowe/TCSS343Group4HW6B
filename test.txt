@@ -1,0 +1,5 @@
+Seattle Kent 30
+Kent Tacoma 31
+Tacoma Seattle 61
+Auburn Kent 10
+Auburn Seattle 29
