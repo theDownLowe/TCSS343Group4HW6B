@@ -75,13 +75,14 @@ public class TripPlanner {
 			}
 		}
 		
-		while (!found) {
+		int selection = 0;
+		while (selection != 1 && selection != 2) {
 			System.out.println("Which version of Dijkstra's algorithm would you like to use?");
 			System.out.println("1) Heap version");
 			System.out.println("2) Array version"); 
 			System.out.print("Selection: ");
 			
-			int selection = input.nextInt();
+			selection = input.nextInt();
 			if (selection == 1) {
 				runDijkstrasHeap(tripGraph, start, end);
 			} else if (selection == 2) {
@@ -93,11 +94,22 @@ public class TripPlanner {
 	}
 	
 	private static void runDijkstrasHeap(SimpleGraph tripGraph, Vertex start, Vertex end) {
+		System.out.println("----- From " + start.getName() + " to " + end.getName() + " Using Heap Algorithm -----");
+		System.out.println("Best Path: ");
+		
+		System.out.println("Path's distance: ");
 		
 	}
 	
 	private static void runDijkstrasArray(SimpleGraph tripGraph, Vertex start, Vertex end) {
-		
+		System.out.println("----- From " + start.getName() + " to " + end.getName() + " Using Array Algorithm -----");
+		DijkstraArray dArray = new DijkstraArray(start);
+		for (Object v : tripGraph.vertexList.toArray()) {
+			Vertex vert = (Vertex) v;
+			dArray.addCity(vert);
+		}
+		System.out.println("Best Path: ");
+		System.out.println("Path's distance: " + dArray.shortestDistance(end));
 	}
 	
 	private static void listCities(SimpleGraph tripGraph) {
