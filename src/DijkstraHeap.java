@@ -10,7 +10,7 @@
  * @author Trevor Lowe - Modified for Dijkstra Algorithm
  * @version 1
  */
-public class BinaryHeap {
+public class DijkstraHeap {
     
     /* the heap is organized using the implicit array implementation.
      * Array index 0 is not used
@@ -19,7 +19,7 @@ public class BinaryHeap {
     private int size;       // index of last element in the heap
     
     // Constructor
-    public BinaryHeap() {
+    public DijkstraHeap() {
         int initialCapacity = 10;
         
         this.elements = new Comparable[initialCapacity + 1];
@@ -32,7 +32,7 @@ public class BinaryHeap {
      * Constructor
      * @param capacity  number of active elements the heap can contain
      */    
-    public BinaryHeap(int capacity) {
+    public DijkstraHeap(int capacity) {
         this.elements = new Comparable[capacity + 1];
         this.elements[0] = null;
         this.size = 0;
@@ -45,8 +45,8 @@ public class BinaryHeap {
      * @param data  an array of data (no particular order)
      * @return  a binary heap of the given data
      */
-    public static BinaryHeap buildHeap(Comparable[] data) {
-        BinaryHeap newHeap = new BinaryHeap(data.length);
+    public static DijkstraHeap buildHeap(Comparable[] data) {
+        DijkstraHeap newHeap = new DijkstraHeap(data.length);
         for (int i = 0; i < data.length; i++) {
             newHeap.elements[i+1] = data[i];
         }
@@ -71,7 +71,7 @@ public class BinaryHeap {
      * Insert an object into the heap.
      * @param key   a key
      */
-    public void insert(Comparable key) {
+    public void insert(Comparable key, double length) {
 
         if (size >= elements.length - 1) {
             // not enough room -- create a new array and copy
@@ -104,6 +104,10 @@ public class BinaryHeap {
         } else {
             throw new EmptyHeapException();
         }
+    }
+    
+    public void remove(Vertex v, Double dist) {
+    	
     }
     
     

@@ -14,7 +14,7 @@ import java.util.Scanner;
  * and using Dijstra's algorithm, computes the least cost trip route.
  * 
  * @author Trevor Lowe
- * @vrsion 1
+ * @version 1
  */
 public class TripPlanner {
 	public static void main(String[] args) {
@@ -106,9 +106,13 @@ public class TripPlanner {
 		DijkstraArray dArray = new DijkstraArray(start);
 		for (Object v : tripGraph.vertexList.toArray()) {
 			Vertex vert = (Vertex) v;
-			dArray.addCity(vert);
+			dArray.addCity(vert, start);
 		}
-		System.out.println("Best Path: ");
+		for (Object e : tripGraph.edgeList.toArray()) {
+			Edge edge = (Edge) e;
+			dArray.calcEdgeDistance(edge);
+		}
+		dArray.shortestPath(end);
 		System.out.println("Path's distance: " + dArray.shortestDistance(end));
 	}
 	
