@@ -3,6 +3,7 @@
  * Homework 6B
  */
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -96,9 +97,20 @@ public class TripPlanner {
 	private static void runDijkstrasHeap(SimpleGraph tripGraph, Vertex start, Vertex end) {
 		System.out.println("----- From " + start.getName() + " to " + end.getName() + " Using Heap Algorithm -----");
 		System.out.println("Best Path: ");
+		DijkstraHeapAlg alg = null;
+		try {
+			alg = new DijkstraHeapAlg(tripGraph, start);
+		} catch (EmptyHeapException e) {
+			System.out.println("Empty Heap.");
+		}
+		ArrayList<Vertex> bestPath = alg.bestPath(end);
+		for (int i = bestPath.size() - 1; i > 0; i--) {
+			System.out.print(bestPath.get(i).getName() + ", ");
+		}
+		System.out.print(bestPath.get(0).getName());
 		
-		System.out.println("Path's distance: ");
-		
+		System.out.println("\nPath's distance: ");
+		System.out.println(alg.getShortestDistance(end));
 	}
 	
 	private static void runDijkstrasArray(SimpleGraph tripGraph, Vertex start, Vertex end) {
@@ -106,14 +118,15 @@ public class TripPlanner {
 		DijkstraArray dArray = new DijkstraArray(start);
 		for (Object v : tripGraph.vertexList.toArray()) {
 			Vertex vert = (Vertex) v;
-			dArray.addCity(vert, start);
+			dArray.addCity(vert);
 		}
 		for (Object e : tripGraph.edgeList.toArray()) {
 			Edge edge = (Edge) e;
 			dArray.calcEdgeDistance(edge);
 		}
-		dArray.shortestPath(end);
-		System.out.println("Path's distance: " + dArray.shortestDistance(end));
+		System.out.println("Shortest Path: ");
+		dArray.cities.toString();
+		System.out.println("\nPath's distance: " + dArray.shortestDistance(end));
 	}
 	
 	private static void listCities(SimpleGraph tripGraph) {

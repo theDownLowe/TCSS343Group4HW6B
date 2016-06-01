@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,38 +16,66 @@ import java.util.Set;
  */
 public class DijkstraHeapAlg {
 	
-	private boolean shortestDistance;
+	private double shortestDistance;
 	private Set<DijkstraHeapNode> vertexList;
+	private Vertex startVert;
 	
 	public DijkstraHeapAlg(SimpleGraph tripGraph, Vertex start) throws EmptyHeapException {
+		shortestDistance = -1;
+		vertexList = new HashSet<DijkstraHeapNode>();
+		startVert = start;
+		computePath(tripGraph);
+	}
+	
+	private void computePath(SimpleGraph tripGraph) throws EmptyHeapException {
 		DijkstraHeap algHeap = new DijkstraHeap(tripGraph.numVertices() + 1);
 		
-		for (Vertex v: (Vertex[]) tripGraph.vertexList.toArray()) {
+		for (Object vert: tripGraph.vertexList.toArray()) {
+			Vertex v = (Vertex) vert;
 			v.setData(new DijkstraHeapNode(v, -1, null));
-			// algHeap.insert(v, dist to v)
+			algHeap.insert((DijkstraHeapNode)v.getData());
 		}
-		// Set length of start to 0
-		// Call algHeap.decrease(start, length of start)
+		algHeap.decrease((DijkstraHeapNode)startVert.getData());
 		Set<DijkstraHeapNode> spFound = new HashSet<DijkstraHeapNode>();
 		for (int i = 0; i < tripGraph.numVertices() - 1; i++) {
-			Vertex fringe = (Vertex) algHeap.deleteMin();
-			//spFound.add(fringe);
-			for (Vertex v: (Vertex[]) tripGraph.vertexList.toArray()) {
+			Vertex fringe = ((DijkstraHeapNode)algHeap.deleteMin()).getVertex();
+			spFound.add((DijkstraHeapNode)fringe.getData());
+			for (Object vert : tripGraph.vertexList.toArray()) {
+				Vertex v = (Vertex) vert;
 				if (!spFound.contains(v)) {
 					boolean adjacent = false;
-					for (Edge e : (Edge[]) fringe.incidentEdgeList.toArray()) {
+					for (Object obj : fringe.incidentEdgeList.toArray()) {
+						Edge e = (Edge) obj;
 						if (tripGraph.opposite(fringe, e).equals(v)) {
 							adjacent = true;
 							break;
 						}
 					}
-					if (adjacent /* && length to fringe + weight from fringe to v < length to v*/) {
-						// Length to v = length to fringe + weight from fringe to v
-						// Penultimate of v = fringe
-						// spFound.decrease(v, length of v)
+					if (adjacent && ((DijkstraHeapNode)fringe.getData()).compareTo((DijkstraHeapNode)v.getData()) == -1) {
+						((DijkstraHeapNode)v.getData()).setDistance(((DijkstraHeapNode)fringe.getData()).getDistance());
+						((DijkstraHeapNode)v.getData()).setPenVert(fringe);
+						algHeap.decrease((DijkstraHeapNode)v.getData());
 					}
 				}
 			}
 		}
+		vertexList = spFound;
+	}
+	
+	public ArrayList<Vertex> bestPath(Vertex end) {
+		ArrayList<Vertex> path = new ArrayList<Vertex>();
+		path.add(end);
+		Vertex next = ((DijkstraHeapNode)end.getData()).getPenVert();
+		while (next != null) {
+			path.add(next);
+			next = ((DijkstraHeapNode)end.getData()).getPenVert();
+		}
+		path.add(startVert);
+		return path;
+	}
+	
+	public double getShortestDistance(Vertex end) {
+		shortestDistance = ((DijkstraHeapNode)end.getData()).getDistance();
+		return shortestDistance;
 	}
 }

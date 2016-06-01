@@ -28,6 +28,10 @@ public class DijkstraHeapNode implements Comparable {
 		distance = newDist;
 	}
 	
+	public void setPenVert(Vertex newPen) {
+		penVert = newPen;
+	}
+	
 	public double getDistance() {
 		return this.distance;
 	}

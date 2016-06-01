@@ -71,7 +71,7 @@ public class DijkstraHeap {
      * Insert an object into the heap.
      * @param key   a key
      */
-    public void insert(Comparable key, double length) {
+    public void insert(Comparable key) {
 
         if (size >= elements.length - 1) {
             // not enough room -- create a new array and copy
@@ -106,8 +106,14 @@ public class DijkstraHeap {
         }
     }
     
-    public void remove(Vertex v, Double dist) {
-    	
+    public void decrease(DijkstraHeapNode n) {
+    	int index = 0;
+    	for (int i = 0; i < elements.length; i++) {
+    		if (n.equals(elements[i])) {
+    			index = i;
+    		}
+    	}
+    	percolateUp(index);
     }
     
     
